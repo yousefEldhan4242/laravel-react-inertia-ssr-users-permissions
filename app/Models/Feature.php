@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Feature extends Model
 {
+
+    protected $fillable = ["name","description","user_id"];
     use HasFactory;
     public function upvotes(): HasMany
     {

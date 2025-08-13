@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\FeatureResource;
 use App\Models\Feature;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FeatureController extends Controller
 {
@@ -13,7 +14,7 @@ class FeatureController extends Controller
      */
     public function index()
     {
-        $paginated = Feature::orderBy("id")->paginate();
+        $paginated = Feature::latest()->paginate();
         return Inertia("Feature/Index",[
             "features" => FeatureResource::collection($paginated),
         ]);
@@ -24,7 +25,7 @@ class FeatureController extends Controller
      */
     public function create()
     {
-        //
+        return inertia("Feature/Create");
     }
 
     /**
@@ -32,7 +33,13 @@ class FeatureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "name"=> "required|string",
+            "description"=> "nullable|string",
+        ]);
+        $data["user_id"] = Auth::user()->id;
+        Feature::create($data);
+        return to_route("feature.index")->with("success","Feature Created Successfullt");
     }
 
     /**
@@ -40,7 +47,9 @@ class FeatureController extends Controller
      */
     public function show(Feature $feature)
     {
-        //
+        return inertia("Feature/Show", [
+            "feature" => new FeatureResource($feature)
+        ]);
     }
 
     /**
@@ -48,7 +57,9 @@ class FeatureController extends Controller
      */
     public function edit(Feature $feature)
     {
-        //
+        return inertia("Feature/Edit", [
+            "feature" => new FeatureResource($feature)
+        ]);
     }
 
     /**
@@ -56,7 +67,12 @@ class FeatureController extends Controller
      */
     public function update(Request $request, Feature $feature)
     {
-        //
+        $data = $request->validate([
+            "name"=> "required|string",
+            "description"=> "nullable|string",
+        ]);
+        Feature::update($data);
+        return to_route("feature.index")->with("success","Feature Updated Successfullt");
     }
 
     /**
@@ -64,6 +80,7 @@ class FeatureController extends Controller
      */
     public function destroy(Feature $feature)
     {
-        //
+        $feature->delete();
+        return to_route("feature.index")->with("success","Feature Deleted Successfullt");
     }
 }

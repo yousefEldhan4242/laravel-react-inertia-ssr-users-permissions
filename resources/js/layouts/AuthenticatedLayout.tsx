@@ -7,7 +7,6 @@ import { PropsWithChildren, ReactNode, useState } from 'react';
 
 export default function Authenticated({ header, children }: PropsWithChildren<{ header?: ReactNode }>) {
     const user = usePage().props.auth.user;
-    console.log(user);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
