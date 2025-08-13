@@ -11,6 +11,21 @@ export interface User {
   email: string;
   avatar?: string;  
   email_verified_at:string,
+  permissions: string[],
+  roles: string[],
+}
+
+export type PaginatedData<T=unknown> = {
+  data:T[],
+  links: Record<string,string>
+}
+
+export type Feature = {
+  id:number,
+  name:string,
+  description:strirng,
+  user:User,
+  created_at:string,
 }
 
 // Breadcrumb item type
