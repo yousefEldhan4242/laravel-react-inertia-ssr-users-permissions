@@ -27,7 +27,6 @@ const FeatureUpvoteDownvote = ({feature}:{feature:Feature}) => {
             })
         }
     }
-    console.log(feature)
     return (
         <div className="flex flex-col items-center">
             <button onClick={()=>upvoteDownvote(true)} className={feature.user_has_upvoted ? 'text-amber-600' : ''}>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FeatureListResource;
 use App\Http\Resources\FeatureResource;
 use App\Models\Feature;
 use App\Models\Upvote;
@@ -26,9 +27,8 @@ class FeatureController extends Controller
             $q->where("user_id", $currentUserId)->where("upvote", 0);
         }])->paginate();
 
-
         return Inertia("Feature/Index", [
-            "features" => FeatureResource::collection($paginated),
+            "features" => FeatureListResource::collection($paginated),
         ]);
     }
 
