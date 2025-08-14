@@ -13,6 +13,7 @@ export default function Create() {
         description: '',
     });
 
+
     const createFeature: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('feature.store'), {

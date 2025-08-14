@@ -26,6 +26,9 @@ export type Feature = {
   description:strirng,
   user:User,
   created_at:string,
+  upvote_count:number,
+  user_has_upvoted:boolean,
+  user_has_downvoted:boolean
 }
 
 // Breadcrumb item type
