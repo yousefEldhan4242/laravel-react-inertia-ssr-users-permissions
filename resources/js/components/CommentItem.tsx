@@ -1,7 +1,10 @@
+import { can } from '@/helpers';
 import { Comment } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 
 const CommentItem = ({ comment }: { comment: Comment }) => {
+    const user = usePage().props.auth.user
+    
     const form = useForm()
     const deleteComment = () => {
         form.delete(route("comment.destroy",comment.id),{
@@ -28,7 +31,7 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
                 </h3>
                 <div className="mt-1 italic">{comment.comment}</div>
             </div>
-            <div>
+            {can(user,"manage_comments") && comment.user.id == user.id && <div>
                 <button onClick={deleteComment} className="flex items-center px-6 py-2">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +48,7 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
                         />
                     </svg>
                 </button>
-            </div>
+            </div>}
         </div>
     );
 };

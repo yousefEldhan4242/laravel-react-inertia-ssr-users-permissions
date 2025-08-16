@@ -19,7 +19,7 @@ const FeatureItem = ({ feature }: { feature: Feature }) => {
                         <Link href={route('feature.show', feature)}>{feature.name}</Link>
                     </h2>
                     {(feature.description || '').length <= 200 ? (
-                        <p className="break-all">{feature.description}</p>
+                        <p className="break-all">{feature.description }</p>
                     ) : (
                         <>
                             <p className="break-all">{isExpanded ? feature.description : `${feature.description.slice(0, 200)}...`}</p>

@@ -19,13 +19,14 @@ class FeatureController extends Controller
     {
         $currentUserId = Auth::user()->id;
 
-        $paginated = Feature::orderBy("id")->withCount(["upvotes as upvote_count" => function ($query) {
+        $paginated = Feature::orderBy("id")->with("comments.user")->withCount(["upvotes as upvote_count" => function ($query) {
             $query->select(DB::raw("SUM(CASE WHEN upvote = 1 THEN 1 ELSE -1 END)"));
         }])->withExists(["upvotes as user_has_upvoted" => function ($q) use ($currentUserId) {
             $q->where("user_id", $currentUserId)->where("upvote", 1);
         }, "upvotes as user_has_downvoted" => function ($q) use ($currentUserId) {
             $q->where("user_id", $currentUserId)->where("upvote", 0);
         }])->paginate();
+
 
         return Inertia("Feature/Index", [
             "features" => FeatureListResource::collection($paginated),
