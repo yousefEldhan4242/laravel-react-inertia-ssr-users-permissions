@@ -9,6 +9,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  created_at:string;
   avatar?: string;  
   email_verified_at:string,
   permissions: string[],

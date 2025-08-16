@@ -2,6 +2,7 @@ import ApplicationLogo from '@/components/ApplicationLogo';
 import Dropdown from '@/components/Dropdown';
 import NavLink from '@/components/NavLink';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink';
+import { can } from '@/helpers';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
@@ -30,6 +31,9 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
                                 <NavLink href={route('feature.index')} active={route().current('feature.index')}>
                                     Features
                                 </NavLink>
+                                {can(user,"manage_users") && <NavLink href={route('user.index')} active={route().current('user.index')}>
+                                    Users
+                                </NavLink>}
                             </div>
                         </div>
 
@@ -104,6 +108,9 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
                         <ResponsiveNavLink href={route('feature.index')} active={route().current('feature.index')}>
                             Features
                         </ResponsiveNavLink>
+                        {can(user,"manage_users") && <ResponsiveNavLink href={route('user.index')} active={route().current('user.index')}>
+                            Users
+                        </ResponsiveNavLink>}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
