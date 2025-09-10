@@ -1,11 +1,10 @@
 import FeatureItem from '@/components/FeatureItem';
 import { can } from '@/helpers';
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-import { Feature, PageProps, PaginatedData } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Feature, PageProps } from '@/types';
+import { Head, Link, WhenVisible } from '@inertiajs/react';
 
-export default function Index({auth, features }: PageProps<{features: PaginatedData<Feature>}>  ) {
-    // TODO handle pagination for features
+export default function Index({auth, features,page,lastPage }: PageProps<{features: Feature[], page:number,lastPage:number}>  ) {
 
     return (
         <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Features</h2>}>
@@ -19,9 +18,18 @@ export default function Index({auth, features }: PageProps<{features: PaginatedD
                 </Link>}
             </div>
 
-            {features.data.map((feature) => (
+            {features.map((feature) => (
                 <FeatureItem key={feature.id} feature={feature} />
             ))}
+            {lastPage > page && <WhenVisible always
+            fallback={<div>Loading...</div>}
+             params={{ 
+                data:{page:page+1},
+                only:["features","page"],
+                preserveUrl:true,
+             }}>
+                Load More Features
+            </WhenVisible>}
         </AuthenticatedLayout>
     );
 }

@@ -28,10 +28,10 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
-                                <NavLink href={route('feature.index')} active={route().current('feature.index')}>
+                                <NavLink prefetch={["mount","hover"]} href={route('feature.index')} active={route().current('feature.index')}>
                                     Features
                                 </NavLink>
-                                {can(user,"manage_users") && <NavLink href={route('user.index')} active={route().current('user.index')}>
+                                {can(user,"manage_users") && <NavLink prefetch href={route('user.index')} active={route().current('user.index')}>
                                     Users
                                 </NavLink>}
                             </div>
@@ -65,7 +65,7 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link prefetch href={route('profile.edit')}>Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
@@ -137,9 +137,9 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {success && (
+                    {success as ReactNode && (
                         <div className='bg-emerald-500 py-4 px-6 mb-8 rounded'>
-                            {success}
+                            {success as React.ReactNode}
                         </div>
                     )}
                     <main>{children}</main>

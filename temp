@@ -1,0 +1,22 @@
+server {
+    listen 5180;
+    server_name 159.223.29.236;
+    root /home/yousef_tarek/user-permissions/public;
+    index index.php index.html;
+
+    location / {
+           try_files $uri $uri/ /index.php?$query_string;
+   index index.php index.html;
+    }
+	location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    include fastcgi_params;
+    fastcgi_read_timeout 300;
+	}
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}

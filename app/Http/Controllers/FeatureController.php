@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\FeatureListResource;
 use App\Http\Resources\FeatureResource;
+use App\Http\Resources\UserResource;
 use App\Models\Feature;
 use App\Models\Upvote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class FeatureController extends Controller
 {
@@ -29,7 +31,9 @@ class FeatureController extends Controller
 
 
         return Inertia("Feature/Index", [
-            "features" => FeatureListResource::collection($paginated),
+            "features" => Inertia::merge(FeatureListResource::collection($paginated)->collection->toArray()),
+            "page" => $paginated->currentPage(),
+            "lastPage" => $paginated->lastPage(),
         ]);
     }
 
@@ -74,7 +78,18 @@ class FeatureController extends Controller
         ->exists();
 
         return inertia("Feature/Show", [
-            "feature" => new FeatureResource($feature)
+            "feature" => new FeatureResource($feature),
+            "comments" => inertia()->defer(function () use ($feature) {
+                return $feature->comments->map(function ($comment) {
+                return [
+                    "id" => $comment->id,
+                    "comment" => $comment->comment,
+                    "user" => new UserResource($comment->user),
+                    "created_at" => $comment->created_at->format("Y-m-d H:i:s")
+                ];
+            }
+        );
+    }),
         ]);
     }
 
